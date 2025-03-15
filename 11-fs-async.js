@@ -1,29 +1,19 @@
 const { readFile, writeFile } = require("fs");
-console.log("Start");
-readFile("./content/first.txt", "utf8", (err, result) => {
-  if (err) {
-    console.log(err);
-    return null;
-  }
-  const first = result;
-  readFile("./content/second.txt", "utf8", (err, result) => {
-    if (err) {
-      console.log(err);
-      return null;
-    }
-    const second = result;
-    writeFile(
-      "./content/result-async.txt",
-      `Not sure what's going on! Here's your result: ${first} and ${second}`,
-      (err, result) => {
-        if (err) {
-          console.log(err);
-          return null;
-        }
-        console.log("Done with this task");
-      }
-    );
-  });
-});
 
+// Using the Node.js fs module, write a function readAndAppend(filePath, textToAppend) that:
+// Reads the contents of the file at filePath asynchronously.
+// Appends textToAppend to the end of the file’s content.
+// Writes the updated content back to the same file.
+// Properly handles errors (e.g., file doesn’t exist).
+async function readAndAppend(filePath, textToAppend) {
+  const readFileContent = await readFile(filePath);
+  const append = await readFileContent.append(textToAppend);
+
+  const writeNewText = await writeFile(filePath, append, (err) => {
+    if (err) {
+      throw new err();
+    }
+  });
+  return writeNewText;
+}
 console.log("Starting the next task");
